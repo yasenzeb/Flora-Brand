@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Flora Brand - الحقائب الخرزية</title>
+<style>
+  :root{
+    --bg:#000000;          /* أسود */
+    --card:#0b0b0b;        /* أسود أفتح قليلًا للبطاقات */
+    --gold:#f5d36c;        /* ذهبي أساسي للنصوص والعناصر */
+    --gold-2:#f8e08a;      /* درجة ذهبي أفتح */
+    --muted:#bfbfbf;       /* رمادي للنصوص المساعدة */
+    --line:#1a1a1a;        /* حدود خفيفة */
+    --success:#25d366;     /* واتساب */
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--gold);
+    padding: 18px;
+  }
+
+  /* رأس الصفحة */
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{
+    width:56px;height:56px;border-radius:14px;
+    background: radial-gradient(120px 120px at 30% 30%, #222 0%, #000 65%);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--gold);font-weight:900;border:1px solid var(--line)
+  }
+  h1{margin:0;font-size:22px;color:var(--gold)}
+  .subtitle{color:var(--muted);font-size:13px}
+
+  /* تخطيط عام */
+  .wrap{display:flex;gap:18px;flex-wrap:wrap}
+  .left{flex:1;min-width:320px}
+  .right{width:360px;min-width:300px}
+
+  /* البانر */
+  .hero{
+    background: linear-gradient(90deg,#0b0b0b 0%, #121212 100%);
+    border:1px solid var(--line);
+    border-radius:14px;padding:18px;display:flex;gap:16px;align-items:center;margin-bottom:16px
+  }
+  .hero h2{margin:0 0 6px 0;font-size:20px;color:var(--gold-2)}
+  .hero p{margin:0;color:var(--muted)}
+  .cta{
+    margin-top:10px;display:inline-block;text-decoration:none;
+    background: var(--gold); color:#000; font-weight:800; padding:10px 14px; border-radius:10px;
+    border:0; cursor:pointer; transition: transform .12s ease, filter .2s ease
+  }
+  .cta:hover{filter:brightness(1.05); transform: translateY(-2px)}
+
+  /* شبكة المنتجات */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .card{
+    background: var(--card);
+    border:1px solid var(--line);
+    border-radius:14px; padding:12px;
+    display:flex; flex-direction:column; gap:10px; position:relative;
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    will-change: transform;
+  }
+  .card:hover{transform: translateY(-10px); box-shadow:0 14px 40px rgba(245,211,108,.12); border-color:#262626}
+  .badge{
+    position:absolute; left:12px; top:12px; background:#1b1b1b; color:var(--gold);
+    padding:6px 8px; border-radius:8px; font-weight:800; font-size:12px; border:1px solid var(--line)
+  }
+  .prod-img{width:100%; height:210px; object-fit:cover; border-radius:10px; background:#111; border:1px solid #161616}
+  .prod-title{font-weight:900; color:var(--gold)}
+  .details{color:var(--muted); font-size:13px; background:rgba(255,255,255,0.03); border:1px dashed #1f1f1f; padding:8px; border-radius:10px}
+  .price{color:var(--gold-2); font-weight:900}
+  .oldprice{color:#777; text-decoration:line-through; font-size:13px}
+
+  .actions{display:flex;gap:8px; align-items:center}
+  button{
+    cursor:pointer; border:0; padding:10px 12px; border-radius:10px; font-weight:800;
+    transition: transform .12s ease, filter .2s ease
+  }
+  button:hover{filter:brightness(1.05); transform: translateY(-2px)}
+  .add{background: var(--gold); color:#000}
+  .view{background: transparent; color: var(--gold); border:1px solid #2a2a2a}
+
+  /* السلة */
+  .cart{
+    background: #0a0a0a; border:1px solid var(--line);
+    border-radius:14px; padding:14px; color:var(--gold)
+  }
+  .cart h3{margin:0 0 10px 0}
+  .cart-items{max-height:340px; overflow:auto; border:1px solid #141414; border-radius:12px; padding:8px; background:#070707}
+  .cart-item{display:flex; gap:8px; align-items:center; padding:8px; border-radius:10px; border:1px solid #131313; background:#0e0e0e; margin-bottom:8px}
+  .cart-item img{width:56px; height:56px; object-fit:cover; border-radius:8px; border:1px solid #1a1a1a}
+  .total{font-weight:900; color:var(--gold)}
+
+  /* واتساب عائم */
+  .whatsapp{
+    position:fixed; left:14px; bottom:14px; width:62px; height:62px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; background:var(--success); color:#fff;
+    text-decoration:none; font-size:24px; box-shadow:0 12px 36px rgba(37,211,102,0.2); z-index:60
+  }
+
+  /* المؤقت */
+  .countdown{background:#0d0d0d; border:1px solid #1b1b1b; color:var(--gold-2); padding:8px 10px; border-radius:10px; font-weight:900}
+
+  /* مودال Checkout */
+  .modal{
+    position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:100
+  }
+  .modal.show{display:flex}
+  .modal-card{
+    width:min(560px, 94vw); background:#0a0a0a; border:1px solid #1c1c1c; border-radius:14px; padding:16px; color:var(--gold)
+  }
+  .modal-card h4{margin:0 0 10px 0}
+  .form-row{display:flex; gap:10px; margin-bottom:10px}
+  .form-row > *{flex:1}
+  input, textarea{
+    width:100%; background:#0e0e0e; color:var(--gold); border:1px solid #1f1f1f; border-radius:10px; padding:10px; outline:none
+  }
+  textarea{min-height:80px; resize:vertical}
+  .modal-actions{display:flex; gap:8px; justify-content:flex-end; margin-top:10px}
+  .ghost{background:transparent; color:var(--gold); border:1px solid #2a2a2a}
+  .primary{background:var(--gold); color:#000}
+
+  @media (max-width:980px){ .wrap{flex-direction:column} .right{width:100%} }
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">FB</div>
+      <div>
+        <h1>Flora Brand</h1>
+        <div class="subtitle">حقائب خرزية أصيلة — خامة ممتازة ولمعة فاخرة</div>
+      </div>
+    </div>
+    <span class="countdown" id="countdown">العرض ينتهي بعد: 12:00:00</span>
+  </header>
+
+  <div class="wrap">
+    <div class="left">
+      <div class="hero">
+        <div>
+          <h2>تشكيلة جديدة — إطلالة ذهبية على الأسود</h2>
+          <p>خصم لفترة محدودة + شحن مجاني عند شراء قطعتين.</p>
+          <a class="cta" href="#cart">أكمل الطلب الآن</a>
+        </div>
+        <img src="https://i.imgur.com/qX5ZyVo.jpg" alt="Flora Brand Hero" style="width:160px;border-radius:12px;border:1px solid #191919;object-fit:cover">
+      </div>
+
+      <section class="grid" id="productGrid"><!-- المنتجات تظهر هنا --></section>
+    </div>
+
+    <aside class="right" id="cart">
+      <div class="cart">
+        <h3>سلة الطلبات</h3>
+        <div class="cart-items" id="cartItems">لا توجد منتجات بعد</div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+          <div class="small" style="color:var(--muted)">الإجمالي:</div>
+          <div class="total" id="total">0 ج.م</div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button id="checkoutBtn" class="primary" style="flex:1;border-radius:10px;padding:10px 14px;font-weight:900">أكمل الطلب عبر واتساب</button>
+          <button id="clearBtn" class="ghost" style="padding:10px 14px;border-radius:10px">افراغ</button>
+        </div>
+
+        <div style="margin-top:10px;color:var(--muted);font-size:13px">عرض خاص: اشترِ 2 وخذ الشحن مجانًا.</div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- زر واتساب عائم -->
+  <a class="whatsapp" href="https://wa.me/201061927815" target="_blank" title="تواصل واتساب">💬</a>
+
+  <footer style="margin-top:18px;color:#8f8f8f;font-size:13px;text-align:center; border-top:1px solid #101010; padding-top:12px">
+    © Flora Brand — توصيل داخل مصر · استبدال خلال 7 أيام
+  </footer>
+
+  <!-- مودال إدخال بيانات العميل -->
+  <div class="modal" id="checkoutModal" aria-hidden="true">
+    <div class="modal-card">
+      <h4>بيانات التوصيل</h4>
+      <div id="orderPreview" style="background:#0e0e0e;border:1px solid #1a1a1a;padding:10px;border-radius:10px;font-size:13px;color:var(--muted);margin-bottom:10px"></div>
+
+      <div class="form-row">
+        <input type="text" id="custName" placeholder="الاسم الكامل">
+        <input type="tel" id="custPhone" placeholder="رقم الهاتف (مثال: 010...)">
+      </div>
+      <textarea id="custAddress" placeholder="العنوان الكامل (المدينة - المنطقة - أقرب معلم)"></textarea>
+
+      <div class="modal-actions">
+        <button class="ghost" id="closeModal">إلغاء</button>
+        <button class="primary" id="sendOrder">إرسال الطلب عبر واتساب</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // ===== إعدادات عامة =====
+  const waNumber = '201061927815'; // رقم واتساب الدولي (مصر 20 + الرقم بدون صفر)
+  let cart = JSON.parse(localStorage.getItem('floraCart') || '[]');
+
+  // ===== المنتجات =====
+  const products = [
+    {id:1,name:'حقيبة خرزية - روزي',price:350,img:'https://i.imgur.com/qX5ZyVo.jpg'},
+    {id:2,name:'حقيبة خرزية - كلاسيك',price:350,img:'https://i.imgur.com/3X4qRXX.jpg'},
+    {id:3,name:'حقيبة خرزية - لامعة',price:350,img:'https://i.imgur.com/JnDZTqg.jpg'},
+    {id:4,name:'حقيبة خرزية - صغيرة',price:350,img:'https://i.imgur.com/6qI2Arp.jpg'},
+    {id:5,name:'حقيبة خرزية - بترولي',price:350,img:'https://i.imgur.com/0rXw8yZ.jpg'},
+    {id:6,name:'حقيبة خرزية - فوشيا',price:350,img:'https://i.imgur.com/2bKXh3N.jpg'},
+    {id:7,name:'حقيبة خرزية - ذهبي',price:350,img:'https://i.imgur.com/8Qm9K2v.jpg'},
+    {id:8,name:'حقيبة خرزية - أسود أنيق',price:350,img:'https://i.imgur.com/9y3ZKfL.jpg'}
+  ];
+
+  const grid = document.getElementById('productGrid');
+  const cartItemsEl = document.getElementById('cartItems');
+  const totalEl = document.getElementById('total');
+
+  // إنشاء كروت المنتجات
+  function renderProducts(){
+    products.forEach(p=>{
+      const el = document.createElement('article');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="badge">الأكثر طلبًا</div>
+        <img class="prod-img" src="${p.img}" alt="${p.name}">
+        <div class="prod-title">${p.name}</div>
+        <div class="details">خامة خرز ممتازة — حياكة متينة — لمعة أنيقة تناسب الخروج والسهرات.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="price">${p.price} ج.م</div>
+            <div class="oldprice">399 ج.م</div>
+          </div>
+          <div class="actions">
+            <button class="add" data-id="${p.id}">أضف للسلة</button>
+            <button class="view" data-id="${p.id}">اشتري الآن</button>
+          </div>
+        </div>
+      `;
+      grid.appendChild(el);
+    });
+  }
+
+  // عرض السلة
+  function renderCart(){
+    if(cart.length===0){
+      cartItemsEl.innerHTML = 'لا توجد منتجات بعد';
+      totalEl.textContent = '0 ج.م';
+      return;
+    }
+    cartItemsEl.innerHTML = '';
+    let sum = 0;
+    cart.forEach(i=>{
+      const row = document.createElement('div');
+      row.className = 'cart-item';
+      row.innerHTML = `
+        <img src="${i.img}">
+        <div style="flex:1">
+          <div style="font-weight:900">${i.name}</div>
+          <div style="color:#9a9a9a;font-size:13px">${i.price} ج.م × ${i.qty}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="ghost" onclick="changeQty(${i.id},1)">+1</button>
+          <button class="ghost" onclick="changeQty(${i.id},-1)">-1</button>
+          <button class="ghost" onclick="removeFromCart(${i.id})">حذف</button>
+        </div>
+      `;
+      cartItemsEl.appendChild(row);
+      sum += i.price * i.qty;
+    });
+    const shipping = cart.reduce((a,b)=>a+b.qty,0) >= 2 ? 0 : 40;
+    totalEl.textContent = (sum + shipping) + ' ج.م';
+  }
+
+  // تخزين محلي
+  function saveCart(){ localStorage.setItem('floraCart', JSON.stringify(cart)); renderCart(); }
+
+  // عمليات السلة
+  function addToCart(id, qty=1){
+    const prod = products.find(p=>p.id===id);
+    const item = cart.find(i=>i.id===id);
+    if(item){ item.qty += qty; } else { cart.push({...prod, qty}); }
+    saveCart();
+    // إشعار بسيط
+    try{ if(window.navigator.vibrate) navigator.vibrate(20); }catch(e){}
+  }
+  function changeQty(id,delta){
+    const it = cart.find(i=>i.id===id); if(!it) return;
+    it.qty += delta; if(it.qty<1){ removeFromCart(id); return; } saveCart();
+  }
+  function removeFromCart(id){ cart = cart.filter(i=>i.id!==id); saveCart(); }
+
+  // ربط الأزرار بعد إنشاء المنتجات
+  function attachListeners(){
+    document.querySelectorAll('.add').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        const id = parseInt(e.currentTarget.dataset.id);
+        addToCart(id,1);
+      });
+    });
+    document.querySelectorAll('.view').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        const id = parseInt(e.currentTarget.dataset.id);
+        addToCart(id,1); // يضيف للسلة
+        openCheckout();  // ويفتح فورم الطلب مباشرة
+      });
+    });
+  }
+
+  // المؤقت (12 ساعة)
+  const countdownEl = document.getElementById('countdown');
+  let countdown = 12*3600;
+  setInterval(()=>{
+    countdown = Math.max(0, countdown-1);
+    const h = String(Math.floor(countdown/3600)).padStart(2,'0');
+    const m = String(Math.floor((countdown%3600)/60)).padStart(2,'0');
+    const s = String(countdown%60).padStart(2,'0');
+    countdownEl.textContent = `العرض ينتهي بعد: ${h}:${m}:${s}`;
+  },1000);
+
+  // أزرار السلة
+  document.getElementById('clearBtn').addEventListener('click', ()=>{ cart=[]; saveCart(); });
+
+  // ===== مودال Checkout =====
+  const modal = document.getElementById('checkoutModal');
+  const orderPreview = document.getElementById('orderPreview');
+  const nameInput = document.getElementById('custName');
+  const phoneInput = document.getElementById('custPhone');
+  const addrInput  = document.getElementById('custAddress');
+
+  function openCheckout(){
+    if(cart.length===0){ alert('السلة فارغة'); return; }
+    // بناء المعاينة
+    let sum=0, txt='';
+    cart.forEach(i=>{ sum+=i.price*i.qty; txt += `• ${i.name} — ${i.qty} × ${i.price} ج.م\n`; });
+    const shipping = cart.reduce((a,b)=>a+b.qty,0) >= 2 ? 0 : 40;
+    const total = sum + shipping;
+    orderPreview.textContent = `${txt}\nالشحن: ${shipping} ج.م\nالإجمالي: ${total} ج.م`;
+    modal.classList.add('show');
+  }
+
+  document.getElementById('checkoutBtn').addEventListener('click', openCheckout);
+  document.getElementById('closeModal').addEventListener('click', ()=> modal.classList.remove('show'));
+
+  document.getElementById('sendOrder').addEventListener('click', ()=>{
+    if(cart.length===0){ alert('السلة فارغة'); return; }
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+    const address = addrInput.value.trim();
+    if(!name){ alert('من فضلك أدخل الاسم'); return; }
+    if(!phone){ alert('من فضلك أدخل رقم الهاتف'); return; }
+    if(!address){ alert('من فضلك أدخل العنوان'); return; }
+
+    let itemsText='', sum=0;
+    cart.forEach(i=>{ itemsText += `${i.name} - ${i.qty} × ${i.price} ج.م\n`; sum+=i.price*i.qty; });
+    const shipping = cart.reduce((a,b)=>a+b.qty,0) >= 2 ? 0 : 40;
+    const total = sum + shipping;
+
+    const msg = `طلب من Flora Brand
+${itemsText}
+الشحن: ${shipping} ج.م
+الإجمالي: ${total} ج.م
+
+الاسم: ${name}
+الهاتف: ${phone}
+العنوان: ${address}`;
+
+    const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+    modal.classList.remove('show');
+  });
+
+  // إغلاق المودال عند الضغط خارج الكارت
+  modal.addEventListener('click', (e)=>{ if(e.target===modal) modal.classList.remove('show'); });
+
+  // ===== تشغيل الصفحة =====
+  (function init(){
+    renderProducts();
+    attachListeners();
+    renderCart();
+    // طباعة للتأكد في الكونسول
+    console.log('Products count:', products.length);
+  })();
+</script>
+</body>
+</html>
